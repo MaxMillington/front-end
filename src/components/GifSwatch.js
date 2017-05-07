@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {DragSource} from 'react-dnd';
 import DraggableTypes from '../constants/DraggableTypes';
+import { bindAll } from 'lodash'
 
 // Decorate component with DragSource functionality
 // See react-dnd docs: http://gaearon.github.io/react-dnd/docs-overview.html
@@ -25,9 +26,22 @@ export default class GifSwatch extends Component {
     isDragging: PropTypes.bool.isRequired
   };
 
-  // TODO run GIF on hover
+  constructor() {
+    super();
+    this.state = { mouseEnter: false }
+    bindAll(this, 'mouseEnter', 'mouseOut')
+  }
+
+  mouseEnter() {
+    this.setState({ mouseEnter: true })
+  }
+
+  mouseOut() {
+    this.setState({ mouseEnter: false })
+  }
+
   render() {
-    const { isDragging, connectDragSource, thumbnailUrl } = this.props;
+    const { isDragging, connectDragSource, thumbnailUrl, previewUrl } = this.props;
 
     const draggingStyles = {
       opacity: .5,
@@ -39,14 +53,20 @@ export default class GifSwatch extends Component {
       padding: 12,
       width: '100%',
       background: '#333',
-      ...(isDragging ? draggingStyles : {})
+      ...(isDragging ? draggingStyles : {}),
     }
 
+    const url = this.state.mouseEnter ? previewUrl : thumbnailUrl
+
     return connectDragSource(
-      <div style={styles}>
+      <div
+        style={styles}
+      >
         <img
-          src={ thumbnailUrl }
+          src={ url }
           style={{width: '100%'}}
+          onMouseOver={this.mouseEnter}
+          onMouseOut={(this.mouseOut)}
         />
       </div>
     );

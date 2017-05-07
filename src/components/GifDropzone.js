@@ -9,9 +9,7 @@ import './GifDropzone.scss';
 @DropTarget(DraggableTypes.GIF, { // implement DropTarget interface
   drop(props, monitor, component) {
     const item = monitor.getItem();
-    console.log('Dropped', item);
-    // TODO update state so the dropped gif is displayed here
-    // Hint: you have access to props (like maybe callbacks?) passed in from above
+    props.dropped(item.id)
   }
 }, function registerWithDnD(connect, monitor) {
   return { // These props are injected into our component
@@ -23,6 +21,7 @@ import './GifDropzone.scss';
 export default class GifDropzone extends Component {
   static propTypes = {
     src: PropTypes.string,
+    dropped: PropTypes.func,
     // Injected by React DnD:
     connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,

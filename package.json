@@ -43,6 +43,7 @@
     "normalize.css": "^3.0.3",
     "react": "0.14.2",
     "react-dnd": "1.1.8",
-    "react-dom": "0.14.2"
+    "react-dom": "0.14.2",
+    "superagent": "^3.5.2"
   }
 }
